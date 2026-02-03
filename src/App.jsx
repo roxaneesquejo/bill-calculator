@@ -2,8 +2,7 @@ import { useState } from 'react';
 import './App.css';
 
 function BillCalculator() {
-  const [isSplitMode, setIsSplitMode] = useState(true);
-  const [billAmount, setBillAmount] = useState('');
+  const [billAmount, setBillAmount] = useState(''); 
   const [numberOfPeople, setNumberOfPeople] = useState('');
   const [extraCharge, setExtraCharge] = useState(false);
   const [peopleList, setPeopleList] = useState([]);
@@ -34,7 +33,7 @@ function BillCalculator() {
   };
 
   const updatePersonName = (pIndex, value) => {
-    setPeopleList(peopleList.map((person, i) => i === pIndex ? { ...person, name: value } : person));
+    setPeopleList(peopleList.map((person, i) => i === pIndex ? { ...person, name: value} : person));
   };
 
   const updateDiscount = (pIndex, value) => {
@@ -81,13 +80,7 @@ function BillCalculator() {
 
   return (
     <div className="container">
-      <div className="mode">
-        <button onClick={() => setIsSplitMode(true)}>Split Evenly</button>
-        <button onClick={() => setIsSplitMode(false)}>Individual Payment</button>
-      </div>
-
-      {isSplitMode && (
-        <div className="split-mode">
+        <div>
           <label>Total Bill Amount</label>
           <input type="number" value={billAmount} onChange={(e) => setBillAmount(e.target.value)}/>
 
@@ -96,7 +89,7 @@ function BillCalculator() {
 
           <div className="extra-checkbox">
             <input type="checkbox" checked={extraCharge} onChange={(e) => setExtraCharge(e.target.checked)}/>
-            <label>Extra Items</label>
+            <label>Separate Payment</label>
           </div>
 
           {extraCharge && (
@@ -121,9 +114,6 @@ function BillCalculator() {
             </div>
           )}
         </div>
-      )}
-
-      {!isSplitMode && <div>Wala pa hehe next next commit n lang awa n lang</div>}
 
       <button className="calculate-btn" onClick={calculateReceipt}>Calculate Receipt</button>
 
@@ -133,7 +123,7 @@ function BillCalculator() {
           {results.map((res, i) => (
             <p key={i}>{res.name}: {res.total.toFixed(2)}</p>
           ))}
-          <p>Standard Share (Others): {splitShare.toFixed(2)}</p>
+          <p>Split Amount: {splitShare.toFixed(2)}</p>
         </div>
       )}
     </div>
