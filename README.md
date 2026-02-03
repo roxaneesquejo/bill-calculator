@@ -8,6 +8,12 @@ Also, I wanted to practice using React. This is still a work in progress, and up
 ## Project Description
 This webpage simplifies complex bill splitting. It  separates individual charges from the total bill and calculates the base share for the rest of the group.
 
+## Things I learned so far
+* **States**
+* **CRUD Operations**
+* **Component Separation**
+* **Git Workflow**
+
 ## Tech Stack
 * **Frontend**: React (JSX)
 * **Styling**: CSS
