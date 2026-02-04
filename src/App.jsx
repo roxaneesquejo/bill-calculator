@@ -2,8 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import PersonCard from './components/Person';
 import DisplayResults from './components/DisplayResults'; 
-
-// Hello if you're reading this! I will walk you through the code because I learn better this way :P
+import TrackPayments from './components/TrackPayments';// Hello if you're reading this! I will walk you through the code because I learn better this way :P
 
 function BillCalculator() {
 
@@ -20,11 +19,12 @@ function BillCalculator() {
   const [splitShare, setSplitShare] = useState(0); // Calculate the amount to be splitted by everyone
   const [calculated, setCalculated] = useState(false); // For results to show when "Calculate Button" is clicked
 
+  const [showPaymentTracker, setShowPaymentTracker] = useState(false);
 
   // Add a person to the people list
   const addPerson = () => {
     // Syntax: setterFunction([...array, {items to be added to the list}]) | Note: [...peopleList] creates a new array but copies all items already inside the array. 
-    setPeopleList([...peopleList, { name: '', orders: [], discount: '' }]);
+    setPeopleList([...peopleList, { name: '', orders: [], discount: '', paymentStatus: 'Not Paid', amountPaid: '' }]); 
   };
 
   // Delete a person
@@ -51,7 +51,7 @@ function BillCalculator() {
 
   /*
     Updating
-      For person and discount, it takes the personIndex and value (of changed input). Map does its thing and after that, it changes the value for the variable needed.
+      For person, discount, payment status, it takes the personIndex and value (of changed input). Map does its thing and after that, it changes the value for the variable needed.
       For update order, it maps the person's orders, sees if the item in the array matches the index, and changes the value of what will match.
   */
 
@@ -61,6 +61,14 @@ function BillCalculator() {
 
   const updateDiscount = (pIndex, value) => {
     setPeopleList(peopleList.map((person, i) => i === pIndex ? { ...person, discount: value } : person));
+  };
+
+  const updatePaymentStatus = (pIndex, value) => {
+    setPeopleList(peopleList.map((person, i) => i === pIndex ? { ...person, paymentStatus: value } : person));
+  };
+
+  const updateAmountPaid = (pIndex, value) => {
+    setPeopleList(peopleList.map((person, i) => i === pIndex ? { ...person, amountPaid: value } : person));
   };
 
   const updateOrder = (pIndex, oIndex, field, value) => {
@@ -105,8 +113,11 @@ function BillCalculator() {
         }
 
         return {
-          name: person.name || "No Name :(", 
-          total: Math.max(0, baseShare + extraTotal - discount) // Adds the base share to their extra order minus possible discounts.
+          name: person.name || "Unnamed",
+          total: Math.max(0, personGrossTotal - discount),
+          baseShare: baseShare,                 
+          orders: person.orders,               
+          discount: discount       
         };
       });
 
@@ -153,10 +164,16 @@ function BillCalculator() {
         </div>
 
       <button className="calculate-btn" onClick={calculateReceipt}>Calculate Receipt</button>
-
       {calculated && (
         <DisplayResults results={results} splitShare={splitShare}/>
       )}
+      
+      <TrackPayments 
+        peopleList={peopleList} 
+        results={results} 
+        updatePaymentStatus={updatePaymentStatus} 
+        updateAmountPaid={updateAmountPaid}
+      />
     </div>
   );
 } 
