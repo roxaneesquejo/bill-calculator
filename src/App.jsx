@@ -72,7 +72,7 @@ function BillCalculator() {
   // The fun part
   const calculateReceipt = () => {
     const bill = Number(billAmount) || 0; // Takes the input for bill, if none, it will be set to 0. 
-    const people = Number(numberOfPeople) || 0; // Takes the input for people, if none, it will be set to 0. 
+    const people = Math.max(Number(numberOfPeople), peopleList.length); // Takes the input for people, if none, it will be set to 0. 
 
     const totalExtrasCost = peopleList.reduce((total, person) => { // Note: .reduce iterates through an array and reduces it to a single value. For example, it looks at all the items values in the array and adds all of them, making it an integer. 
       // ^^ This is the reduce for all the people splitting the bill. Total is the accumulator (the one that holds the value for what you are adding). | Person gets the value of an individual, connected to another reduce below.
@@ -87,10 +87,23 @@ function BillCalculator() {
 
     // Calculates the share of those with extra orders.
     if (separatePayment) {
-      const finalResults = peopleList.map(person => {
+        const finalResults = peopleList.map(person => {
         const extraTotal = person.orders.reduce((sum, order) => sum + (Number(order.cost) || 0), 0); // Gets the total cost of a person's orders.
-        const discount = Number(person.discount) || 0; // Discount input
-        
+        const personGrossTotal = baseShare + extraTotal; // Calculates the cost of share plus the separate orders.
+
+        // This is to handle discounts whether it is a whole number or a percentage.
+        let discount = 0;
+        const discountInput = String(person.discount).trim();
+
+        if (discountInput.includes('%')) { // To check if whole number or percentage
+          const percentage = parseFloat(discountInput.replace('%', '')); // Removes the percentage symbol, because we only need the numbers for float.
+          if (!isNaN(percentage)) { 
+            discount = personGrossTotal * (percentage / 100); // If it is a percentage, get how much is discounted.
+          }
+        } else {
+          discount = parseFloat(discountInput) || 0; // If not percentage, just get the whole number
+        }
+
         return {
           name: person.name || "No Name :(", 
           total: Math.max(0, baseShare + extraTotal - discount) // Adds the base share to their extra order minus possible discounts.

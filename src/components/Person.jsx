@@ -16,7 +16,7 @@ function Person({
     <div className="person-card">
       <button onClick={() => deletePerson(pIndex)}>Delete Person</button>
       <input placeholder="Enter Name" value={person.name} onChange={(e) => updatePersonName(pIndex, e.target.value)}/>
-      <input type="number" placeholder="Discount" value={person.discount} onChange={(e) => updateDiscount(pIndex, e.target.value)}/>
+      <input type="text" placeholder="Discount" value={person.discount} onChange={(e) => updateDiscount(pIndex, e.target.value)}/>
 
       {person.orders.map((order, oIndex) => (
         <Orders key={oIndex}
