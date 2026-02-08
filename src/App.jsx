@@ -4,6 +4,7 @@ import DisplayResults from './components/DisplayResults';
 import TrackPayments from './components/TrackPayments';
 import './styles/App.css';
 import './styles/index.css';
+import splitLogo from './assets/splitLogo.png';
 
 function BillCalculator() {
 
@@ -30,6 +31,8 @@ function BillCalculator() {
 
   return (
     <div className="container">
+        <img src={splitLogo} className='splitLogo' alt="Split Logo"/> 
+        
         <div>
           <label>Total Bill Amount</label>
           <input type="number" value={billAmount} onChange={(e) => setBillAmount(e.target.value)}/>
