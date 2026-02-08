@@ -35,10 +35,15 @@ function BillCalculator() {
           <input type="number" value={billAmount} onChange={(e) => setBillAmount(e.target.value)}/>
 
           <label>Number of People</label>
-          <input type="number" value={numberOfPeople} onChange={(e) => setNumberOfPeople(e.target.value)}/>
-
+          <input type="number" value={numberOfPeople} onChange={(e) => setNumberOfPeople(e.target.value)} disabled={separatePayment}/>
           <div className="separate-checkbox">
-            <input type="checkbox" checked={separatePayment} onChange={(e) => setSeparatePayment(e.target.checked)}/>
+           <input type="checkbox" checked={separatePayment} onChange={(e) => {
+              setSeparatePayment(e.target.checked);
+                if (e.target.checked) {
+                  setNumberOfPeople('');
+                }
+              }}
+            />
             <label>Separate Payment</label>
           </div>
 
