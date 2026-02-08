@@ -1,16 +1,19 @@
 import { useState } from 'react';
 
-function DisplayResults({results, splitShare}) {
+function DisplayResults({results, splitShare, separatePayment}) {
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   return (
     <div className="results-display">
       <h3>Final Breakdown</h3>
-      <div className="split-info">
-        <span>Base Split per Person</span>
-        <strong>{Number(splitShare).toFixed(2)}</strong>
-      </div>
       
+      {!separatePayment && ( 
+        <div className="split-info">
+          <span>Base Split per Person</span>
+          <strong>{Number(splitShare).toFixed(2)}</strong>
+        </div>
+      )}
+
       <div className="results-list">
         {results.map((res, i) => (
           <div key={i} className="result-card">

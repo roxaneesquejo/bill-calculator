@@ -71,7 +71,7 @@ function BillCalculator() {
       
       {calculated && (
         <>
-          <DisplayResults results={results} splitShare={splitShare}/>
+          <DisplayResults results={results} splitShare={splitShare} separatePayment={separatePayment}/>
 
           <TrackPayments 
             peopleList={peopleList} 
