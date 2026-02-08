@@ -5,10 +5,7 @@ function TrackPayments({ peopleList, results, updatePaymentStatus, updateAmountP
 
   return (
     <>
-      <button 
-        className="track-btn" 
-        onClick={() => setShowTracker(!showTracker)}
-      >
+      <button className="track-btn" onClick={() => setShowTracker(!showTracker)}>
         {showTracker ? "Hide Tracker" : "Track Payments"}
       </button>
 
@@ -23,9 +20,8 @@ function TrackPayments({ peopleList, results, updatePaymentStatus, updateAmountP
 
             return (
               <div key={i}>
-                
                 <div>
-                  <span>{person.name || "Unnamed"}</span>
+                  <strong>{person.name || "Unnamed"}</strong>
                   <select 
                     value={person.paymentStatus} 
                     onChange={(e) => updatePaymentStatus(i, e.target.value)}
@@ -37,22 +33,28 @@ function TrackPayments({ peopleList, results, updatePaymentStatus, updateAmountP
                   </select>
                 </div>
 
-                <div>
-                  <input type="number" placeholder="Amount Paid" value={person.amountPaid} onChange={(e) => updateAmountPaid(i, e.target.value)}/>
+                <div className="payment-tracker">
+                  <input 
+                    type="number" 
+                    placeholder="Amount Paid" 
+                    value={person.amountPaid} 
+                    onChange={(e) => updateAmountPaid(i, e.target.value)}
+                  />
                   
-                  <span>
-                    {totalToPay === 0 ? (
-                      <span>(Calculate receipt first)</span>
+                  <span className="balance-info">
+                    {balance < -0.01 ? (
+                      <span className="receive-amount">
+                        Receive: {Math.abs(balance).toFixed(2)}
+                      </span>
                     ) : balance > 0.01 ? (
-                      `To Pay: ${balance.toFixed(2)}`
-                    ) : balance < -0.01 ? (
-                      `Change: ${Math.abs(balance).toFixed(2)}`
+                      <span className="owe-amount">
+                        To Pay: {balance.toFixed(2)}
+                      </span>
                     ) : (
-                      <span>Settled</span>
+                      <span className="settled">Settled</span>
                     )}
                   </span>
                 </div>
-
               </div>
             );
           })}
