@@ -87,7 +87,7 @@ input[type="number"], input[type="text"] {
 }
 
 .add-btn {
-  background-color: var(--primary);
+  background-color: var(--results);
   color: var(--inner);
 }
 
@@ -124,7 +124,7 @@ input[type="number"], input[type="text"] {
 .person-card {
   padding: 15px;
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -132,15 +132,12 @@ input[type="number"], input[type="text"] {
 }
 
 #add-person-btn {
-  width: 92%; 
   padding: 14px;
-  background: var(--primary);
+  background: var(--results);
   color: var(--inner);
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 10px;
-  box-sizing: border-box; 
 }
 
 .calculate-btn {
@@ -165,6 +162,11 @@ input[type="number"], input[type="text"] {
   justify-content: space-between;
   padding: 10px 0;
   color: var(--primary);
+}
+
+.split-info strong {
+  color: var(--results);
+  font-weight: 800;
 }
 
 .result-header {
