@@ -26,7 +26,8 @@ function BillCalculator() {
     updateOrder,
     calculateReceipt,
     updatePaymentStatus,
-    updateAmountPaid
+    updateAmountPaid,
+    resetCalculator
   } = useBillCalculator();
 
   return (
@@ -70,7 +71,14 @@ function BillCalculator() {
           )}
         </div>
 
-      <button className="calculate-btn" onClick={calculateReceipt}>Calculate Receipt</button>
+     <div className="button-group">
+        <button className="calculate-btn" onClick={calculateReceipt}>
+          Calculate Receipt
+        </button>
+        <button className="reset-btn" onClick={resetCalculator}>
+          Reset
+        </button>
+      </div>
       
       {calculated && (
         <>
@@ -84,6 +92,8 @@ function BillCalculator() {
           />
         </>
       )}
+
+      <div className="about">by RK-ADE</div>
     </div>
   );
 }

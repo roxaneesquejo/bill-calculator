@@ -122,6 +122,16 @@ export function useBillCalculator(){
     setCalculated(true);
   };
 
+  const resetCalculator = () => {
+    setBillAmount('');
+    setNumberOfPeople('');
+    setSeparatePayment(false);
+    setPeopleList([]);
+    setResults([]);
+    setSplitShare(0);
+    setCalculated(false);
+  };
+
   return {
     billAmount,
     numberOfPeople,
@@ -144,7 +154,8 @@ export function useBillCalculator(){
     addOrder,
     deleteOrder,
     updateOrder,
-    calculateReceipt
+    calculateReceipt,
+    resetCalculator
   };
 }
   
