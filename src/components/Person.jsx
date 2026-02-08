@@ -4,7 +4,7 @@ import Orders from './Orders';
 
 function Person({ 
   person, 
-  pIndex, 
+  personIndex, 
   deletePerson, 
   updatePersonName, 
   updateDiscount, 
@@ -14,21 +14,44 @@ function Person({
 }) {
   return (
     <div className="person-card">
-      <button onClick={() => deletePerson(pIndex)}>Delete Person</button>
-      <input placeholder="Enter Name" value={person.name} onChange={(e) => updatePersonName(pIndex, e.target.value)}/>
-      <input type="text" placeholder="Discount" value={person.discount} onChange={(e) => updateDiscount(pIndex, e.target.value)}/>
-
-      {person.orders.map((order, oIndex) => (
-        <Orders key={oIndex}
-          order={order}
-          oIndex={oIndex}
-          pIndex={pIndex}
-          updateOrder={updateOrder}
-          deleteOrder={deleteOrder}
-        />
-      ))}
       
-      <button onClick={() => addOrder(pIndex)}>Add Item</button>
+      <div className="person-header">
+        <input 
+          className="input-name"
+          placeholder="Enter Name" 
+          value={person.name} 
+          onChange={(e) => updatePersonName(personIndex, e.target.value)}
+        />
+        <input 
+          className="input-discount"
+          type="text" 
+          placeholder="Discount" 
+          value={person.discount} 
+          onChange={(e) => updateDiscount(personIndex, e.target.value)}
+        />
+      </div>
+
+      <div className="person-orders">
+        {person.orders.map((order, orderIndex) => (
+          <Orders key={orderIndex}
+            order={order}
+            orderIndex={orderIndex}
+            personIndex={personIndex}
+            updateOrder={updateOrder}
+            deleteOrder={deleteOrder}
+          />
+        ))}
+      </div>
+      
+      <div className="person-footer">
+        <button className="person-btn delete-btn" onClick={() => deletePerson(personIndex)}>
+           Delete Person
+        </button>
+        <button className ="person-btn add-btn" onClick={() => addOrder(personIndex)}>
+          Add Item
+        </button>
+      </div>
+
     </div>
   );
 }
