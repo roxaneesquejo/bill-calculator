@@ -59,6 +59,7 @@ function BillCalculator() {
       const statusIndex = headers.indexOf("status");
       const amountIndex = headers.indexOf("amount paid");
       const totalIndex = headers.indexOf("total bill");
+      const discountIndex = headers.indexOf("discount");
 
       if (nameIndex === -1) {
         throw new Error("Could not find a 'Name' column in the Excel file.");
@@ -69,6 +70,7 @@ function BillCalculator() {
         Status: statusIndex !== -1 ? row[statusIndex] : undefined,
         "Amount Paid": amountIndex !== -1 ? row[amountIndex] : 0,
         "Total Bill": totalIndex !== -1 ? row[totalIndex] : 0,
+        Discount: discountIndex !== -1 ? row[discountIndex] : 0,
       }));
 
       importPaymentData(formattedData);

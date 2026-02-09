@@ -117,20 +117,35 @@ export function useBillCalculator() {
     const newPeopleList = importedData.map((row) => ({
       name: row.Name || "Unnamed",
       orders: [{ orderName: "Imported Bill", cost: row["Total Bill"] || 0 }],
-      discount: 0,
+      discount: row.Discount || 0,
       paymentStatus: row.Status || "Not Paid",
       amountPaid:
         row["Amount Paid"] !== undefined ? String(row["Amount Paid"]) : "",
     }));
 
     // This creates results directly so that it will ready the payment tracker.
-    const newResults = importedData.map((row) => ({
-      name: row.Name || "Unnamed",
-      total: Number(row["Total Bill"]) || 0,
-      baseShare: 0,
-      orders: [],
-      discountAmount: 0,
-    }));
+    const newResults = importedData.map((row) => {
+      const totalBill = Number(row["Total Bill"]) || 0;
+      const discountInput = String(row.Discount || "0").trim();
+
+      let discountAmount = 0;
+      if (discountInput.includes("%")) {
+        const percentage = parseFloat(discountInput.replace("%", ""));
+        discountAmount = !isNaN(percentage)
+          ? totalBill * (percentage / 100)
+          : 0;
+      } else {
+        discountAmount = parseFloat(discountInput) || 0;
+      }
+
+      return {
+        name: row.Name || "Unnamed",
+        total: Math.max(0, totalBill - discountAmount), 
+        baseShare: 0,
+        orders: [],
+        discountAmount: discountAmount,
+      };
+    });
 
     // Setter for all the input data
     setPeopleList(newPeopleList);

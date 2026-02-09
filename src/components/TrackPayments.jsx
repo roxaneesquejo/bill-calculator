@@ -13,12 +13,14 @@ function TrackPayments({
     const data = peopleList.map((person, i) => {
       const personResult = results && results[i];
       const totalToPay = personResult ? personResult.total : 0;
+      const discountAmount = personResult ? personResult.discountAmount : 0;
       const amountPaid = Number(person.amountPaid) || 0;
       const balance = totalToPay - amountPaid;
 
       return {
         name: person.name ? String(person.name) : "Unnamed",
         total: Number(totalToPay).toFixed(2),
+        discount: Number(discountAmount).toFixed(2),
         amountPaid: amountPaid,
         status: person.paymentStatus
           ? String(person.paymentStatus)
@@ -36,12 +38,23 @@ function TrackPayments({
         width: 15,
       },
       {
+        column: "Discount",
+        type: String,
+        value: (row) => row.discount,
+        width: 15,
+      },
+      {
         column: "Amount Paid",
         type: Number,
         value: (row) => row.amountPaid,
         width: 15,
       },
-      { column: "Status", type: String, value: (row) => row.status, width: 20 },
+      { 
+        column: "Status", 
+        type: String, 
+        value: (row) => row.status, 
+        width: 20 
+      },
       {
         column: "Balance",
         type: String,
