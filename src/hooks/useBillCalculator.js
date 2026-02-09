@@ -88,10 +88,14 @@ export function useBillCalculator() {
     );
   };
 
-  const updatePersonName = (personIndex, value) => updatePerson(personIndex, 'name', value);
-  const updateDiscount = (personIndex, value) => updatePerson(personIndex, 'discount', value);
-  const updatePaymentStatus = (personIndex, value) => updatePerson(personIndex, 'paymentStatus', value);
-  const updateAmountPaid = (personIndex, value) => updatePerson(personIndex, 'amountPaid', value);
+  const updatePersonName = (personIndex, value) =>
+    updatePerson(personIndex, "name", value);
+  const updateDiscount = (personIndex, value) =>
+    updatePerson(personIndex, "discount", value);
+  const updatePaymentStatus = (personIndex, value) =>
+    updatePerson(personIndex, "paymentStatus", value);
+  const updateAmountPaid = (personIndex, value) =>
+    updatePerson(personIndex, "amountPaid", value);
 
   const updateOrder = (personIndex, orderIndex, field, value) => {
     setPeopleList(
@@ -112,7 +116,7 @@ export function useBillCalculator() {
     // This creates a people list from the imported excel file. It also extracts their data.
     const newPeopleList = importedData.map((row) => ({
       name: row.Name || "Unnamed",
-      orders: [{ orderName: "Imported Bill", cost: row["Total Bill"] || 0 }], 
+      orders: [{ orderName: "Imported Bill", cost: row["Total Bill"] || 0 }],
       discount: 0,
       paymentStatus: row.Status || "Not Paid",
       amountPaid:

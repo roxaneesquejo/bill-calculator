@@ -118,7 +118,7 @@ function BillCalculator() {
           <div className="extra-people-list">
             {peopleList.map((person, personIndex) => (
               <PersonCard
-                key={`person-${personIndex}-${person.name}`}
+                key={`person-${personIndex}`}
                 personIndex={personIndex}
                 person={person}
                 deletePerson={deletePerson}
