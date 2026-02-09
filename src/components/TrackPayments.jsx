@@ -13,7 +13,7 @@ function TrackPayments({
     const data = peopleList.map((person, i) => {
       const personResult = results && results[i];
       const totalToPay = personResult ? personResult.total : 0;
-      const discountAmount = personResult ? personResult.discountAmount : "";
+      const discountAmount = personResult ? personResult.discountAmount : 0;
       const amountPaid = Number(person.amountPaid) || 0;
       const balance = totalToPay - amountPaid;
 

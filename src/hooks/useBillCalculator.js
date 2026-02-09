@@ -16,7 +16,7 @@ export function useBillCalculator() {
   // Add a person to the people list
   const addPerson = () => {
     // Syntax: setterFunction([...array, {items to be added to the list}]) | Note: [...peopleList] creates a new array but copies all items already inside the array.
-    setPeopleList([
+    setPeopleList([ 
       ...peopleList,
       {
         name: "",
