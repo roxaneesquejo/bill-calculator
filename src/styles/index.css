@@ -1,12 +1,12 @@
 #root {
-  --primary: #3e000c; 
+  --primary: #3e000c;
   --secondary: #f8efda;
   --results: #2a653c;
   --deductions: #c62828;
   --inner: #ffffff;
-  
-  font-family: 'Inter', system-ui, Helvetica, Arial, sans-serif;
-  background-color: #3e000c;
+
+  font-family: "Inter", system-ui, Helvetica, Arial, sans-serif;
+  background-color: #85cddd;
   min-height: 100vh;
   display: flex;
   justify-content: center;

@@ -33,7 +33,7 @@ function Person({
 
       <div className="person-orders">
         {person.orders.map((order, orderIndex) => (
-          <Orders key={orderIndex}
+          <Orders key={`${personIndex}-${orderIndex}`}
             order={order}
             orderIndex={orderIndex}
             personIndex={personIndex}
