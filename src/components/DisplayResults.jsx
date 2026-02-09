@@ -16,7 +16,7 @@ function DisplayResults({results, splitShare, separatePayment}) {
 
       <div className="results-list">
         {results.map((res, i) => (
-          <div key={i} className="result-card">
+          <div key={`result-${i}-${res.name}`} className="result-card">
             <div className="result-header" onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}>
               <div className="result-main-info">
                 <span className="result-name">{res.name || "Unnamed"}</span>
@@ -39,7 +39,7 @@ function DisplayResults({results, splitShare, separatePayment}) {
                     <p className="detail-label">Orders</p>
                     <ul>
                       {res.orders.map((o, j) => (
-                        <li key={j}>
+                        <li key={`order-${j}-${o.orderName}`}>
                           <span>{o.orderName || 'Item'}</span>
                           <span>{Number(o.cost).toFixed(2)}</span>
                         </li>

@@ -26,13 +26,14 @@ label {
   color: var(--primary);
 }
 
-input[type="number"], input[type="text"] {
+input[type="number"],
+input[type="text"] {
   padding: 10px;
   text-align: center;
   margin-bottom: 20px;
   border: 1px solid var(--primary);
   border-radius: 10px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
 }
 
 .separate-checkbox input[type="checkbox"] {
@@ -55,20 +56,23 @@ input[type="number"], input[type="text"] {
   margin-bottom: 20px;
 }
 
-.person-header, .order-row {
+.person-header,
+.order-row {
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
 }
 
-.person-header input, .order-row input {
+.person-header input,
+.order-row input {
   margin: 0;
   padding: 8px;
   box-sizing: border-box;
 }
 
-.input-name, .input-item {
+.input-name,
+.input-item {
   flex: 2;
   min-width: 0;
   text-align: center;
@@ -76,7 +80,8 @@ input[type="number"], input[type="text"] {
   border-radius: 10px;
 }
 
-.input-discount, .input-cost {
+.input-discount,
+.input-cost {
   flex: 1;
   min-width: 0;
   text-align: center;
@@ -153,11 +158,12 @@ input[type="number"], input[type="text"] {
 .calculate-btn {
   width: 100%;
   padding: 14px;
-  background: var(--primary);
+  background: #84700a;
   color: var(--inner);
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+  border: none;
   box-sizing: border-box;
 }
 
@@ -165,6 +171,18 @@ input[type="number"], input[type="text"] {
   width: 100%;
   padding: 14px;
   background: var(--deductions);
+  color: var(--inner);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  box-sizing: border-box;
+}
+
+.import-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--results);
   color: var(--inner);
   border-radius: 8px;
   font-weight: bold;
@@ -275,7 +293,7 @@ input[type="number"], input[type="text"] {
 .track-btn {
   width: 100%;
   padding: 14px;
-  background: var(--primary);
+  background: #343189;
   color: var(--inner);
   border-radius: 8px;
   font-weight: bold;
@@ -336,21 +354,34 @@ input[type="number"], input[type="text"] {
 }
 
 .receive-amount {
-  color: var(--results); 
+  color: var(--results);
   font-weight: bold;
 }
 
 .owe-amount {
-  color: var(--deductions); 
+  color: var(--deductions);
   font-weight: bold;
 }
 
 .settled {
-  color: var(--results); 
+  color: var(--results);
   font-weight: bold;
 }
 
+.export-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 14px;
+  background: var(--results);
+  color: var(--inner);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  box-sizing: border-box;
+}
+
 .about {
-  margin-top: 30px;
+  margin-top: 40px;
   color: var(--primary);
 }
