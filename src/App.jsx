@@ -113,7 +113,7 @@ function BillCalculator() {
               }
             }}
           />
-          <label>Separate Payment</label>
+          <label>Manual Mode</label>
         </div>
 
         {separatePayment && (
