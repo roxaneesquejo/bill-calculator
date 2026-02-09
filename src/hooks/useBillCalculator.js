@@ -21,7 +21,7 @@ export function useBillCalculator() {
       {
         name: "",
         orders: [],
-        discount: 0,
+        discount: "",
         paymentStatus: "Not Paid",
         amountPaid: "",
       },
