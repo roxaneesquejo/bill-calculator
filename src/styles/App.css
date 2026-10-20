@@ -13,372 +13,63 @@
 
 .splitLogo {
   width: 100%;
-  max-width: 250px;
+  max-width: 350px;
   height: auto;
   display: block;
-  margin-bottom: 10px;
 }
 
 .tagline {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   color: #3E000C;
   text-align: center;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: bold;
   line-height: 114%
+}
+
+div {
+  margin: 10px;
 }
 
 .button-group {
   display: flex;
-  padding: 40px 40px 48px 40px;
+  width: 500px;
+  padding: 10px 10px 18px 10px;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   gap: 36px;
 }
 
-.scan-btn {
-  display: flex;
-  padding: 14px 15px 12px 14px;
-  justify-content: center;
-  align-items: center;
+.scan-btn, .manual-btn {
   width: 100%;
-  background: #BA2392;
+  height: 50px;
+  font-size: 16px;
+  padding: 14px;
   color: var(--inner);
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   border: none;
+}
+
+.scan-btn {
+  background: #BA2392;
 }
 
 .manual-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--results);
-  color: var(--inner);
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  box-sizing: border-box;
+  background: #9C28C6;
 }
-
-
-input[type="number"],
-input[type="text"] {
-  padding: 10px;
-  text-align: center;
-  margin-bottom: 20px;
-  border: 1px solid var(--primary);
-  border-radius: 10px;
-  box-sizing: border-box;
-}
-
-.person-header,
-.order-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-}
-
-.person-header input,
-.order-row input {
-  margin: 0;
-  padding: 8px;
-  box-sizing: border-box;
-}
-
-.input-name,
-.input-item {
-  flex: 2;
-  min-width: 0;
-  text-align: center;
-  border: 1px solid var(--primary);
-  border-radius: 10px;
-}
-
-.input-discount,
-.input-cost {
-  flex: 1;
-  min-width: 0;
-  text-align: center;
-  border: 1px solid var(--primary);
-  border-radius: 10px;
-}
-
-.header-spacer {
-  width: 30px;
-  flex-shrink: 0;
-}
-
-.person-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.add-btn {
-  background-color: var(--results);
-  color: var(--inner);
-}
-
-.delete-btn {
-  color: var(--inner);
-  background-color: var(--deductions);
-}
-
-.delete-item-btn {
-  color: var(--inner);
-  background: var(--deductions);
-  border: 1px solid var(--inner);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  line-height: 1;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.person-btn {
-  padding: 8px 12px;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.person-card {
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border: 2px solid var(--primary);
-}
-
-#add-person-btn {
-  padding: 14px;
-  background: var(--results);
-  border: none;
-  color: var(--inner);
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 10px;
-}
-
-.reset-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--deductions);
-  color: var(--inner);
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  box-sizing: border-box;
-}
-
 
 .button-group {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.results-display h3 {
-  margin-top: 0;
-  text-align: center;
-  color: var(--primary);
-}
-
-.split-info {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  color: var(--primary);
-}
-
-.split-info strong {
-  color: var(--results);
-  font-weight: 800;
-}
-
-.result-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
-}
-
-.result-main-info {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding-right: 15px;
-  align-items: center;
-}
-
-.result-name {
-  font-weight: bold;
-  color: var(--primary);
-}
-
-.result-total {
-  font-weight: 800;
-  color: var(--results);
-  font-size: 18px;
-}
-
-.expand-btn {
-  background-color: var(--primary);
-  color: var(--secondary);
-  border-color: var(--primary);
-  cursor: pointer;
-}
-
-.detail-label {
-  margin: 5px 0;
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  color: var(--primary);
-}
-
-.orders-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.orders-list li {
-  display: flex;
-  justify-content: space-between;
-  padding: 3px 0;
-}
-
-.discount-row {
-  margin-top: 10px;
-  color: var(--deductions);
-  font-weight: 600;
-}
-
-.results-display {
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 20px;
-  border-radius: 15px;
-  border: 2px solid var(--primary);
-  box-sizing: border-box;
-  text-align: left;
-}
-
-.track-btn {
-  width: 100%;
-  padding: 14px;
-  background: #00008b;
-  color: var(--inner);
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 10px;
-  box-sizing: border-box;
-}
-
-.payment-tracker-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.payment-tracker-container > div {
-  width: 100%;
-  max-width: 400px;
-  border: 2px solid var(--primary);
-  padding: 20px;
-  border-radius: 15px;
-  margin-bottom: 20px;
-  box-sizing: border-box;
-}
-
-.payment-tracker-container div > div:first-child {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.payment-tracker-container select {
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid var(--primary);
-  color: var(--primary);
-  cursor: pointer;
-}
-
-.payment-tracker input[type="number"] {
-  flex: 1;
-  margin-bottom: 0;
-  min-width: 0;
-}
-
-.payment-tracker span {
-  flex: 1;
-  font-weight: bold;
-  text-align: right;
-}
-
-.payment-tracker {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.receive-amount {
-  color: var(--results);
-  font-weight: bold;
-}
-
-.owe-amount {
-  color: var(--deductions);
-  font-weight: bold;
-}
-
-.settled {
-  color: var(--results);
-  font-weight: bold;
-}
-
-.export-btn {
-  margin-top: 10px;
-  width: 100%;
-  padding: 14px;
-  background: var(--results);
-  color: var(--inner);
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  box-sizing: border-box;
+  gap: 20px;
 }
 
 .about {
-  margin-top: 40px;
   color: var(--primary);
 }

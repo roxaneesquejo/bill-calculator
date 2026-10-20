@@ -95,47 +95,7 @@ function BillCalculator() {
         <button className="manual-btn">
           Manual Mode
         </button>
-      </div>
-
-      {calculated && (
-        <>
-          <DisplayResults
-            results={results}
-            splitShare={splitShare}
-            separatePayment={separatePayment}
-          />
-
-          <TrackPayments
-            peopleList={peopleList}
-            results={results}
-            updatePaymentStatus={updatePaymentStatus}
-            updateAmountPaid={updateAmountPaid}
-            />
-        </>
-      )}
-
-            <div>
-              {separatePayment && (
-                <div className="extra-people-list">
-                  {peopleList.map((person, personIndex) => (
-                    <PersonCard
-                      key={`person-${personIndex}`}
-                      personIndex={personIndex}
-                      person={person}
-                      deletePerson={deletePerson}
-                      updatePersonName={updatePersonName}
-                      updateDiscount={updateDiscount}
-                      addOrder={addOrder}
-                      updateOrder={updateOrder}
-                      deleteOrder={deleteOrder}
-                    />
-                  ))}
-                  <button id="add-person-btn" onClick={addPerson}>
-                    Add Person
-                  </button>
-                </div>
-              )}
-            </div>
+      </div>      
       <div className="about">by RK-ADE</div>
     </div>
   );
