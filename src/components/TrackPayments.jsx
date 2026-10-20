@@ -71,13 +71,6 @@ function TrackPayments({
 
   return (
     <>
-      <button
-        className="track-btn"
-        onClick={() => setShowTracker(!showTracker)}
-      >
-        {showTracker ? "Hide Tracker" : "Track Payments"}
-      </button>
-
       {showTracker && (
         <div className="payment-tracker-container">
           <h3>Payment Tracker</h3>

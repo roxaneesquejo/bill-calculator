@@ -5,13 +5,16 @@ import TrackPayments from "./components/TrackPayments";
 import "./styles/App.css";
 import "./styles/index.css";
 import splitLogo from "./assets/splitLogo.png";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import readXlsxFile from "read-excel-file";
 
 function BillCalculator() {
   const {
     billAmount,
     setBillAmount,
+    numberOfPeople,
+    setNumberOfPeople,
+    setSeparatePayment,
     separatePayment,
     peopleList,
     results,
@@ -80,24 +83,119 @@ function BillCalculator() {
     }
   };
 
+  const [isOpen, setIsOpen] = useState(false); 
+
   return (
-    <div className="container">
+    <>
+      <div className="container">
       
-      <div>
-        <img src={splitLogo} className="splitLogo" alt="Split Logo" />
-        <div className="tagline">good friends do good math</div>  
+        <div>
+          <img src={splitLogo} className="splitLogo" alt="Split Logo" />
+          <div className="tagline">good friends do good math</div>  
+        </div>
+
+        <div className="button-group">
+          <button className="scan-btn">
+            Scan Receipt
+          </button>
+          <button className="manual-btn" onClick={() => setIsOpen(true)}>
+            Manual Mode
+          </button>
+        </div>     
+        <div className="about">by RK-ADE</div>
       </div>
 
-      <div className="button-group">
-        <button className="scan-btn">
-          Scan Receipt
-        </button>
-        <button className="manual-btn">
-          Manual Mode
-        </button>
-      </div>      
-      <div className="about">by RK-ADE</div>
-    </div>
+      {isOpen && (
+        <div className="manual-container">
+          <div className="popout-container">
+            <div className="calculator-container">
+              <button className="close-btn" onClick={() => setIsOpen(false)} aria-label="Close calculator">
+                X
+              </button>
+              <div>
+                <div className="options-container">
+                  <button className="calculator-opt">Calculator</button>
+                  <button className="people-opt">People</button>
+                  <button className="track-opt">Track Payments</button>
+                </div>
+                <label>Total Bill Amount</label>
+                <input
+                  type="number"
+                  value={billAmount}
+                  onChange={(e) => setBillAmount(e.target.value)}
+                />
+
+                <label>Number of People</label>
+                <input
+                  type="number"
+                  value={numberOfPeople}
+                  onChange={(e) => setNumberOfPeople(e.target.value)}
+                  disabled={separatePayment}
+                />
+
+                {separatePayment && (
+                  <div className="extra-people-list">
+                    {peopleList.map((person, personIndex) => (
+                      <PersonCard
+                        key={`person-${personIndex}`}
+                        personIndex={personIndex}
+                        person={person}
+                        deletePerson={deletePerson}
+                        updatePersonName={updatePersonName}
+                        updateDiscount={updateDiscount}
+                        addOrder={addOrder}
+                        updateOrder={updateOrder}
+                        deleteOrder={deleteOrder}
+                      />
+                    ))}
+                    <button id="add-person-btn" onClick={addPerson}>
+                      Add Person
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="button-group">
+                <button className="calculate-btn" onClick={calculateReceipt}>
+                  Calculate Receipt
+                </button>
+                <button className="reset-btn" onClick={resetCalculator}>
+                  Reset
+                </button>
+                <button className="import-btn" onClick={handleImportClick}>
+                  Import Excel
+                </button>
+                <input
+                  type="file"
+                  accept=".xlsx, .xls"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+              </div>
+
+              {calculated && (
+                <>
+                  <DisplayResults
+                    results={results}
+                    splitShare={splitShare}
+                    separatePayment={separatePayment}
+                  />
+
+                  <TrackPayments
+                    peopleList={peopleList}
+                    results={results}
+                    updatePaymentStatus={updatePaymentStatus}
+                    updateAmountPaid={updateAmountPaid}
+                  />
+                </>
+              )}
+
+            </div>
+          </div>
+        </div>  
+      )}
+    </>
   );
 }
 
