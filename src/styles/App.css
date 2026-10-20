@@ -16,15 +16,52 @@
   max-width: 250px;
   height: auto;
   display: block;
-  margin-bottom: 28px;
+  margin-bottom: 10px;
 }
 
-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 500;
-  color: var(--primary);
+.tagline {
+  color: #3E000C;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 114%
 }
+
+.button-group {
+  display: flex;
+  padding: 40px 40px 48px 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 36px;
+}
+
+.scan-btn {
+  display: flex;
+  padding: 14px 15px 12px 14px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: #BA2392;
+  color: var(--inner);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.manual-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--results);
+  color: var(--inner);
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  box-sizing: border-box;
+}
+
 
 input[type="number"],
 input[type="text"] {
@@ -34,26 +71,6 @@ input[type="text"] {
   border: 1px solid var(--primary);
   border-radius: 10px;
   box-sizing: border-box;
-}
-
-.separate-checkbox input[type="checkbox"] {
-  cursor: pointer;
-  width: 15px;
-  height: 15px;
-  margin: 0;
-}
-
-.separate-checkbox label {
-  margin: 0;
-}
-
-.separate-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 10px;
-  margin-bottom: 20px;
 }
 
 .person-header,
@@ -156,18 +173,6 @@ input[type="text"] {
   margin-bottom: 10px;
 }
 
-.calculate-btn {
-  width: 100%;
-  padding: 14px;
-  background: #ba8e23;
-  color: var(--inner);
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  box-sizing: border-box;
-}
-
 .reset-btn {
   width: 100%;
   padding: 14px;
@@ -180,17 +185,6 @@ input[type="text"] {
   box-sizing: border-box;
 }
 
-.import-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--results);
-  color: var(--inner);
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  box-sizing: border-box;
-}
 
 .button-group {
   width: 100%;

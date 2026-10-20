@@ -12,10 +12,7 @@ function BillCalculator() {
   const {
     billAmount,
     setBillAmount,
-    numberOfPeople,
-    setNumberOfPeople,
     separatePayment,
-    setSeparatePayment,
     peopleList,
     results,
     splitShare,
@@ -85,76 +82,19 @@ function BillCalculator() {
 
   return (
     <div className="container">
-      <img src={splitLogo} className="splitLogo" alt="Split Logo" />
-
+      
       <div>
-        <label>Total Bill Amount</label>
-        <input
-          type="number"
-          value={billAmount}
-          onChange={(e) => setBillAmount(e.target.value)}
-        />
-
-        <label>Number of People</label>
-        <input
-          type="number"
-          value={numberOfPeople}
-          onChange={(e) => setNumberOfPeople(e.target.value)}
-          disabled={separatePayment}
-        />
-        <div className="separate-checkbox">
-          <input
-            type="checkbox"
-            checked={separatePayment}
-            onChange={(e) => {
-              setSeparatePayment(e.target.checked);
-              if (e.target.checked) {
-                setNumberOfPeople("");
-              }
-            }}
-          />
-          <label>Manual Mode</label>
-        </div>
-
-        {separatePayment && (
-          <div className="extra-people-list">
-            {peopleList.map((person, personIndex) => (
-              <PersonCard
-                key={`person-${personIndex}`}
-                personIndex={personIndex}
-                person={person}
-                deletePerson={deletePerson}
-                updatePersonName={updatePersonName}
-                updateDiscount={updateDiscount}
-                addOrder={addOrder}
-                updateOrder={updateOrder}
-                deleteOrder={deleteOrder}
-              />
-            ))}
-            <button id="add-person-btn" onClick={addPerson}>
-              Add Person
-            </button>
-          </div>
-        )}
+        <img src={splitLogo} className="splitLogo" alt="Split Logo" />
+        <div className="tagline">good friends do good math</div>  
       </div>
 
       <div className="button-group">
-        <button className="calculate-btn" onClick={calculateReceipt}>
-          Calculate Receipt
+        <button className="scan-btn">
+          Scan Receipt
         </button>
-        <button className="reset-btn" onClick={resetCalculator}>
-          Reset
+        <button className="manual-btn">
+          Manual Mode
         </button>
-        <button className="import-btn" onClick={handleImportClick}>
-          Import Excel
-        </button>
-        <input
-          type="file"
-          accept=".xlsx, .xls"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
       </div>
 
       {calculated && (
@@ -170,10 +110,32 @@ function BillCalculator() {
             results={results}
             updatePaymentStatus={updatePaymentStatus}
             updateAmountPaid={updateAmountPaid}
-          />
+            />
         </>
       )}
 
+            <div>
+              {separatePayment && (
+                <div className="extra-people-list">
+                  {peopleList.map((person, personIndex) => (
+                    <PersonCard
+                      key={`person-${personIndex}`}
+                      personIndex={personIndex}
+                      person={person}
+                      deletePerson={deletePerson}
+                      updatePersonName={updatePersonName}
+                      updateDiscount={updateDiscount}
+                      addOrder={addOrder}
+                      updateOrder={updateOrder}
+                      deleteOrder={deleteOrder}
+                    />
+                  ))}
+                  <button id="add-person-btn" onClick={addPerson}>
+                    Add Person
+                  </button>
+                </div>
+              )}
+            </div>
       <div className="about">by RK-ADE</div>
     </div>
   );
