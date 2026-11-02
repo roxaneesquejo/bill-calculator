@@ -15,5 +15,23 @@ This webpage simplifies complex bill splitting. It  separates individual charges
 * **Git Workflow**
 
 ## Tech Stack
-* **Frontend**: React (JSX)
+* **Framework**: React (JSX)
+* **Build Tool**: Vite
 * **Styling**: CSS
+
+## How to run
+1. Make sure you have **Node.js (v18.0.0 above)** installed.
+2. Clone the repository
+```bash
+    git clone https://github.com/roxaneesquejo/bill-calculator
+    cd bill-calculator
+```
+3. Install dependencies
+```bash
+    npm install
+```
+
+4. Run
+```bash
+    npm run dev
+```
