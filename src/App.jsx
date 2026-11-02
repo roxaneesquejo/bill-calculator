@@ -6,7 +6,6 @@ import "./styles/App.css";
 import "./styles/index.css";
 import splitLogo from "./assets/splitLogo.png";
 import { useRef, useState } from "react";
-import readXlsxFile from "read-excel-file";
 
 function BillCalculator() {
   const {
@@ -14,7 +13,6 @@ function BillCalculator() {
     setBillAmount,
     numberOfPeople,
     setNumberOfPeople,
-    setSeparatePayment,
     separatePayment,
     peopleList,
     results,
@@ -32,58 +30,40 @@ function BillCalculator() {
     updatePaymentStatus,
     updateAmountPaid,
     resetCalculator,
-    importPaymentData,
   } = useBillCalculator();
 
-  const fileInputRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedMode, setSelectedMode] = useState("calculator");
 
-  const handleImportClick = () => {
-    fileInputRef.current.click();
+  const handleAddPerson = () => {
+    addPerson();
+    setNumberOfPeople((prev) => Number(prev) + 1);
   };
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    try {
-      const rows = await readXlsxFile(file);
-
-      if (!rows || rows.length < 2) {
-        throw new Error("File appears to be empty or missing headers.");
-      }
-
-      const headers = rows[0].map((h) => String(h).trim().toLowerCase());
-      const dataRows = rows.slice(1);
-
-      const nameIndex = headers.indexOf("name");
-      const statusIndex = headers.indexOf("status");
-      const amountIndex = headers.indexOf("amount paid");
-      const totalIndex = headers.indexOf("total bill");
-      const discountIndex = headers.indexOf("discount");
-
-      if (nameIndex === -1) {
-        throw new Error("Could not find a 'Name' column in the Excel file.");
-      }
-
-      const formattedData = dataRows.map((row) => ({
-        Name: row[nameIndex],
-        Status: statusIndex !== -1 ? row[statusIndex] : undefined,
-        "Amount Paid": amountIndex !== -1 ? row[amountIndex] : 0,
-        "Total Bill": totalIndex !== -1 ? row[totalIndex] : 0,
-        Discount: discountIndex !== -1 ? row[discountIndex] : 0,
-      }));
-
-      importPaymentData(formattedData);
-      alert("Import Successful!");
-    } catch (error) {
-      console.error("Import Error:", error);
-      alert(`Error reading file: ${error.message}`);
-    } finally {
-      e.target.value = null;
+  const handleRemovePerson = () => {
+    if (numberOfPeople > 1) {
+      deletePerson();
+      setNumberOfPeople((prev) => Number(prev) - 1);
     }
   };
 
-  const [isOpen, setIsOpen] = useState(false); 
+  const handleInputPerson = (e) => {
+    const num = Number(e.target.value);
+    if (num < 1) return;
+
+    setNumberOfPeople(num);
+
+    const diff = num - peopleList.length;
+    if (diff > 0) {
+      for (let i = 0; i < diff; i++) {
+        addPerson();
+      }
+    } else if (diff < 0) {
+      for (let i = 0; i < Math.abs(diff); i++) {
+        deletePerson(peopleList.length - 1 - i);
+      }
+    }
+  };
 
   return (
     <>
@@ -114,26 +94,82 @@ function BillCalculator() {
               </button>
               <div>
                 <div className="options-container">
-                  <button className="calculator-opt">Calculator</button>
-                  <button className="people-opt">People</button>
-                  <button className="track-opt">Track Payments</button>
+                  <button
+                    className="calculator-opt"
+                    onClick={() => setSelectedMode("calculator")}
+                  >
+                    Calculator
+                  </button>
+                  
+                  <button 
+                    className="people-opt"
+                    onClick={() => {
+                      setSelectedMode("people");
+                      separatePayment(true);
+                    }}
+                  >
+                    People
+                  </button>
+                  
+                  <button 
+                    className="track-opt"
+                    onClick={() => setSelectedMode("payments")}
+                  >
+                    Track Payments
+                  </button>
                 </div>
-                <label>Total Bill Amount</label>
-                <input
-                  type="number"
-                  value={billAmount}
-                  onChange={(e) => setBillAmount(e.target.value)}
-                />
 
-                <label>Number of People</label>
-                <input
-                  type="number"
-                  value={numberOfPeople}
-                  onChange={(e) => setNumberOfPeople(e.target.value)}
-                  disabled={separatePayment}
-                />
+                {selectedMode === 'calculator' && (
+                  <div className="calculator-div">
+                    <label>Total Bill Amount</label>
+                    <input
+                      type="number"
+                      value={billAmount}
+                      onChange={(e) => setBillAmount(e.target.value)}
+                    />
 
-                {separatePayment && (
+                    <label>Number of People</label>
+                    <button
+                      className="minus-button"
+                      onClick={handleRemovePerson}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={numberOfPeople}
+                      onChange={handleInputPerson}
+                    />
+
+                    <button className="plus-button"
+                    onClick={handleAddPerson}>
+                      +
+                    </button>
+
+                    {calculated && (
+                      <>
+                        <DisplayResults
+                          results={results}
+                          splitShare={splitShare}
+                          separatePayment={separatePayment}
+                        />
+                    
+                      </>
+                    )}
+
+                    <div className="button-group">
+                      <button className="calculate-btn" onClick={calculateReceipt}>
+                        Calculate Receipt
+                      </button>
+                      <button className="reset-btn" onClick={resetCalculator}>
+                        Reset
+                      </button>
+                    </div>
+                    
+                  </div>
+                )}
+
+                {selectedMode === 'people' && (
                   <div className="extra-people-list">
                     {peopleList.map((person, personIndex) => (
                       <PersonCard
@@ -148,48 +184,22 @@ function BillCalculator() {
                         deleteOrder={deleteOrder}
                       />
                     ))}
-                    <button id="add-person-btn" onClick={addPerson}>
+                    <button id="add-person-btn" onClick={handleAddPerson}>
                       Add Person
                     </button>
                   </div>
                 )}
-              </div>
 
-              <div className="button-group">
-                <button className="calculate-btn" onClick={calculateReceipt}>
-                  Calculate Receipt
-                </button>
-                <button className="reset-btn" onClick={resetCalculator}>
-                  Reset
-                </button>
-                <button className="import-btn" onClick={handleImportClick}>
-                  Import Excel
-                </button>
-                <input
-                  type="file"
-                  accept=".xlsx, .xls"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleFileChange}
-                />
-              </div>
-
-              {calculated && (
-                <>
-                  <DisplayResults
-                    results={results}
-                    splitShare={splitShare}
-                    separatePayment={separatePayment}
-                  />
-
+                {selectedMode === 'payments' && (
                   <TrackPayments
                     peopleList={peopleList}
                     results={results}
                     updatePaymentStatus={updatePaymentStatus}
                     updateAmountPaid={updateAmountPaid}
                   />
-                </>
-              )}
+                )}
+              </div>
+
 
             </div>
           </div>

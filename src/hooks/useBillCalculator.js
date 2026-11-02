@@ -2,13 +2,22 @@ import { useState } from "react";
 
 export function useBillCalculator() {
   // syntax: const [variable, function to set value to variable] = setInitialValue(value);
+
   // These are for user inputs
   const [billAmount, setBillAmount] = useState(""); // Input and set bill amount
-  const [numberOfPeople, setNumberOfPeople] = useState(""); // Input and set number of people
+  const [numberOfPeople, setNumberOfPeople] = useState("1"); // Input and set number of people
   const [separatePayment, setSeparatePayment] = useState(false); // Check if there are separate payments
 
   // These are for calculations
-  const [peopleList, setPeopleList] = useState([]); // Array/people list of separate payments
+  const [peopleList, setPeopleList] = useState([
+    {
+      name: "",
+      orders: [],
+      discount: "",
+      paymentStatus: "Not Paid",
+      amountPaid: "",
+    },
+  ]); // Array/people list
   const [results, setResults] = useState([]); // Results array (it is an array because we want to calculate the results of every individual)
   const [splitShare, setSplitShare] = useState(0); // Calculate the amount to be splitted by everyone
   const [calculated, setCalculated] = useState(false); // For results to show when "Calculate Button" is clicked
@@ -220,7 +229,7 @@ export function useBillCalculator() {
 
   const resetCalculator = () => {
     setBillAmount("");
-    setNumberOfPeople("");
+    setNumberOfPeople("1");
     setSeparatePayment(false);
     setPeopleList([]);
     setResults([]);
