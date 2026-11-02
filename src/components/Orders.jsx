@@ -26,7 +26,7 @@ function Orders({ order, orderIndex, personIndex, updateOrder, deleteOrder }) {
         onClick={() => deleteOrder(personIndex, orderIndex)}
         title="Remove Item"
       >
-        &times;
+        x
       </button>
     </div>
   );
