@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export function useBillCalculator() {
   // syntax: const [variable, function to set value to variable] = setInitialValue(value);
@@ -18,10 +18,6 @@ export function useBillCalculator() {
       amountPaid: "",
     },
   ]); // Array/people list
-  const [results, setResults] = useState([]); // Results array (it is an array because we want to calculate the results of every individual)
-  const [splitShare, setSplitShare] = useState(0); // Calculate the amount to be splitted by everyone
-  const [calculated, setCalculated] = useState(false); // For results to show when "Calculate Button" is clicked
-
   // Add a person to the people list
   const addPerson = () => {
     // Syntax: setterFunction([...array, {items to be added to the list}]) | Note: [...peopleList] creates a new array but copies all items already inside the array.
@@ -148,7 +144,7 @@ export function useBillCalculator() {
       }
 
       return {
-        name: row.Name || "Unnamed",
+        name: row.Name || "Person",
         total: Math.max(0, totalBill - discountAmount), 
         baseShare: 0,
         orders: [],
@@ -158,17 +154,15 @@ export function useBillCalculator() {
 
     // Setter for all the input data
     setPeopleList(newPeopleList);
-    setResults(newResults);
     setNumberOfPeople(newPeopleList.length);
     setSeparatePayment(true);
-    setCalculated(true);
 
     const totalBill = newResults.reduce((sum, p) => sum + p.total, 0);
     setBillAmount(totalBill);
   };
 
   // The fun part
-  const calculateReceipt = () => {
+  const calculateReceipt = useCallback(() => {
     const bill = Number(billAmount) || 0; // Takes the input for bill, if none, it will be set to 0.
     const people = Math.max(Number(numberOfPeople), peopleList.length); // Takes the input for people, if none, it will be set to 0.
 
@@ -185,11 +179,10 @@ export function useBillCalculator() {
     const remainingBill = Math.max(0, bill - totalExtrasCost); // The total bill is subtracted by the extra order costs, to get the share of those who did not get an extra order.
     const baseShare = people > 0 ? remainingBill / people : 0; // The base share is calculated by dividing the remaining bill by the number of people. It is 0 if no people.
 
-    setSplitShare(baseShare); // Setter
-
     // Calculates the share of those with extra orders.
+    let results = [];
     if (separatePayment) {
-      const finalResults = peopleList.map((person) => {
+      const finalResults = peopleList.map((person, personIndex) => {
         const extraTotal = person.orders.reduce(
           (sum, order) => sum + (Number(order.cost) || 0),
           0,
@@ -211,7 +204,7 @@ export function useBillCalculator() {
         }
 
         return {
-          name: person.name || "Unnamed",
+          name: person.name || `${personIndex + 1}`,
           total: Math.max(0, personGrossTotal - discount),
           baseShare: baseShare,
           orders: person.orders,
@@ -219,22 +212,19 @@ export function useBillCalculator() {
         };
       });
 
-      setResults(finalResults); // Setter
-    } else {
-      setResults([]); // Empty array if there are no separate orders.
+      results = finalResults;
     }
 
-    setCalculated(true);
-  };
+    return { results, splitShare: baseShare };
+  }, [billAmount, numberOfPeople, peopleList, separatePayment]);
 
+  const calculation = calculateReceipt();
+  
   const resetCalculator = () => {
     setBillAmount("");
     setNumberOfPeople("1");
     setSeparatePayment(false);
     setPeopleList([]);
-    setResults([]);
-    setSplitShare(0);
-    setCalculated(false);
   };
 
   return {
@@ -242,9 +232,8 @@ export function useBillCalculator() {
     numberOfPeople,
     separatePayment,
     peopleList,
-    results,
-    splitShare,
-    calculated,
+    results: calculation.results,
+    splitShare: calculation.splitShare,
 
     setBillAmount,
     setNumberOfPeople,

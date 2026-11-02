@@ -17,7 +17,6 @@ function BillCalculator() {
     peopleList,
     results,
     splitShare,
-    calculated,
 
     addPerson,
     deletePerson,
@@ -26,7 +25,6 @@ function BillCalculator() {
     addOrder,
     deleteOrder,
     updateOrder,
-    calculateReceipt,
     updatePaymentStatus,
     updateAmountPaid,
     resetCalculator,
@@ -146,21 +144,16 @@ function BillCalculator() {
                       +
                     </button>
 
-                    {calculated && (
-                      <>
-                        <DisplayResults
-                          results={results}
-                          splitShare={splitShare}
-                          separatePayment={separatePayment}
-                        />
-                    
-                      </>
-                    )}
+                    <>
+                      <DisplayResults
+                        results={results}
+                        splitShare={splitShare}
+                        separatePayment={separatePayment}
+                      />
+                  
+                    </>
 
                     <div className="button-group">
-                      <button className="calculate-btn" onClick={calculateReceipt}>
-                        Calculate Receipt
-                      </button>
                       <button className="reset-btn" onClick={resetCalculator}>
                         Reset
                       </button>
@@ -199,8 +192,6 @@ function BillCalculator() {
                   />
                 )}
               </div>
-
-
             </div>
           </div>
         </div>  

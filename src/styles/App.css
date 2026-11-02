@@ -211,18 +211,6 @@ input[type="text"] {
   margin-bottom: 10px;
 }
 
-.calculate-btn {
-  width: 100%;
-  padding: 14px;
-  background: #ba8e23;
-  color: var(--inner);
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  box-sizing: border-box;
-}
-
 .reset-btn {
   width: 100%;
   padding: 14px;

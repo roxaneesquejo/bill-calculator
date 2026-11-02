@@ -17,7 +17,7 @@ function Person({
       <div className="person-header">
         <input
           className="input-name"
-          placeholder="Enter Name"
+          placeholder={`Person ${personIndex + 1}`}
           value={person.name}
           onChange={(e) => updatePersonName(personIndex, e.target.value)}
         />
