@@ -5,7 +5,7 @@ import TrackPayments from "./components/TrackPayments";
 import "./styles/App.css";
 import "./styles/index.css";
 import splitLogo from "./assets/splitLogo.png";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 function BillCalculator() {
   const {
@@ -13,7 +13,6 @@ function BillCalculator() {
     setBillAmount,
     numberOfPeople,
     setNumberOfPeople,
-    separatePayment,
     peopleList,
     results,
     splitShare,
@@ -103,7 +102,6 @@ function BillCalculator() {
                     className="people-opt"
                     onClick={() => {
                       setSelectedMode("people");
-                      separatePayment(true);
                     }}
                   >
                     People
@@ -148,7 +146,6 @@ function BillCalculator() {
                       <DisplayResults
                         results={results}
                         splitShare={splitShare}
-                        separatePayment={separatePayment}
                       />
                   
                     </>

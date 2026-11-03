@@ -1,18 +1,11 @@
 import { useState } from "react";
 
-function DisplayResults({ results, splitShare, separatePayment }) {
+function DisplayResults({ results }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   return (
     <div className="results-display">
       <h3>Final Breakdown</h3>
-
-      {!separatePayment && (
-        <div className="split-info">
-          <span>Base Split per Person</span>
-          <strong>{Number(splitShare).toFixed(2)}</strong>
-        </div>
-      )}
 
       <div className="results-list">
         {results.map((res, i) => (
@@ -22,7 +15,7 @@ function DisplayResults({ results, splitShare, separatePayment }) {
               onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
             >
               <div className="result-main-info">
-                <span className="result-name">{res.name || "Unnamed"}</span>
+                <span className="result-name">{res.name}</span>
                 <span className="result-total">
                   {Number(res.total).toFixed(2)}
                 </span>

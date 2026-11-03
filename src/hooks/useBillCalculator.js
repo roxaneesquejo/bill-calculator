@@ -6,7 +6,6 @@ export function useBillCalculator() {
   // These are for user inputs
   const [billAmount, setBillAmount] = useState(""); // Input and set bill amount
   const [numberOfPeople, setNumberOfPeople] = useState("1"); // Input and set number of people
-  const [separatePayment, setSeparatePayment] = useState(false); // Check if there are separate payments
 
   // These are for calculations
   const [peopleList, setPeopleList] = useState([
@@ -18,6 +17,7 @@ export function useBillCalculator() {
       amountPaid: "",
     },
   ]); // Array/people list
+  
   // Add a person to the people list
   const addPerson = () => {
     // Syntax: setterFunction([...array, {items to be added to the list}]) | Note: [...peopleList] creates a new array but copies all items already inside the array.
@@ -37,7 +37,6 @@ export function useBillCalculator() {
   const deletePerson = (personIndex) => {
     const updatedPeople = peopleList.filter((_, i) => i !== personIndex); // Note: .filter creates a new array, if it does not match the personIndex (to delete), it keeps it in the array.
     setPeopleList(updatedPeople); // Sets the people list to the updated list
-    if (updatedPeople.length === 0) setSeparatePayment(false); // If there are no people, there are no separation of payments
   };
 
   // Add order to a person
@@ -95,10 +94,13 @@ export function useBillCalculator() {
 
   const updatePersonName = (personIndex, value) =>
     updatePerson(personIndex, "name", value);
+
   const updateDiscount = (personIndex, value) =>
     updatePerson(personIndex, "discount", value);
+
   const updatePaymentStatus = (personIndex, value) =>
     updatePerson(personIndex, "paymentStatus", value);
+
   const updateAmountPaid = (personIndex, value) =>
     updatePerson(personIndex, "amountPaid", value);
 
@@ -117,50 +119,6 @@ export function useBillCalculator() {
     );
   };
 
-  const importPaymentData = (importedData) => {
-    // This creates a people list from the imported excel file. It also extracts their data.
-    const newPeopleList = importedData.map((row) => ({
-      name: row.Name || "Unnamed",
-      orders: [{ orderName: "Imported Bill", cost: row["Total Bill"] || 0 }],
-      discount: row.Discount || 0,
-      paymentStatus: row.Status || "Not Paid",
-      amountPaid:
-        row["Amount Paid"] !== undefined ? String(row["Amount Paid"]) : "",
-    }));
-
-    // This creates results directly so that it will ready the payment tracker.
-    const newResults = importedData.map((row) => {
-      const totalBill = Number(row["Total Bill"]) || 0;
-      const discountInput = String(row.Discount || "0").trim();
-
-      let discountAmount = 0;
-      if (discountInput.includes("%")) {
-        const percentage = parseFloat(discountInput.replace("%", ""));
-        discountAmount = !isNaN(percentage)
-          ? totalBill * (percentage / 100)
-          : 0;
-      } else {
-        discountAmount = parseFloat(discountInput) || 0;
-      }
-
-      return {
-        name: row.Name || "Person",
-        total: Math.max(0, totalBill - discountAmount), 
-        baseShare: 0,
-        orders: [],
-        discountAmount: discountAmount,
-      };
-    });
-
-    // Setter for all the input data
-    setPeopleList(newPeopleList);
-    setNumberOfPeople(newPeopleList.length);
-    setSeparatePayment(true);
-
-    const totalBill = newResults.reduce((sum, p) => sum + p.total, 0);
-    setBillAmount(totalBill);
-  };
-
   // The fun part
   const calculateReceipt = useCallback(() => {
     const bill = Number(billAmount) || 0; // Takes the input for bill, if none, it will be set to 0.
@@ -170,8 +128,7 @@ export function useBillCalculator() {
       // Note: .reduce iterates through an array and reduces it to a single value. For example, it looks at all the items values in the array and adds all of them, making it an integer.
       // ^^ This is the reduce for all the people splitting the bill. Total is the accumulator (the one that holds the value for what you are adding). | Person gets the value of an individual, connected to another reduce below.
       return (
-        total +
-        person.orders.reduce((sum, order) => sum + (Number(order.cost) || 0), 0)
+        total + person.orders.reduce((sum, order) => sum + (Number(order.cost) || 0), 0)
       ); // Reduce for their individual orders: sum = accumulated values of extra order each iteration. It is added by the costs of the extra order. If no extra orders, its initial value is 0.
       // The bottom line here is that, the second .reduce gets the sum of an individual's orders(array), and adds it to total (Total costs of all extra orders of ALL INDIVIDUALS). First .reduce makes sure to loop through every person(another array).
     }, 0);
@@ -180,64 +137,56 @@ export function useBillCalculator() {
     const baseShare = people > 0 ? remainingBill / people : 0; // The base share is calculated by dividing the remaining bill by the number of people. It is 0 if no people.
 
     // Calculates the share of those with extra orders.
-    let results = [];
-    if (separatePayment) {
-      const finalResults = peopleList.map((person, personIndex) => {
-        const extraTotal = person.orders.reduce(
-          (sum, order) => sum + (Number(order.cost) || 0),
-          0,
-        ); // Gets the total cost of a person's orders.
-        const personGrossTotal = baseShare + extraTotal; // Calculates the cost of share plus the separate orders.
+    const results = peopleList.map((person, personIndex) => {
+      const extraTotal = person.orders.reduce(
+        (sum, order) => sum + (Number(order.cost) || 0),
+        0,
+      ); // Gets the total cost of a person's orders.
+      const personGrossTotal = baseShare + extraTotal; // Calculates the cost of share plus the separate orders.
 
-        // This is to handle discounts whether it is a whole number or a percentage.
-        let discount = 0;
-        const discountInput = String(person.discount).trim();
+      // This is to handle discounts whether it is a whole number or a percentage.
+      let discount = 0;
+      const discountInput = String(person.discount).trim();
 
-        if (discountInput.includes("%")) {
-          // To check if whole number or percentage
-          const percentage = parseFloat(discountInput.replace("%", "")); // Removes the percentage symbol, because we only need the numbers for float.
-          if (!isNaN(percentage)) {
-            discount = personGrossTotal * (percentage / 100); // If it is a percentage, get how much is discounted.
-          }
-        } else {
-          discount = parseFloat(discountInput) || 0; // If not percentage, just get the whole number
+      if (discountInput.includes("%")) {
+        // To check if whole number or percentage
+        const percentage = parseFloat(discountInput.replace("%", "")); // Removes the percentage symbol, because we only need the numbers for float.
+        if (!isNaN(percentage)) {
+          discount = personGrossTotal * (percentage / 100); // If it is a percentage, get how much is discounted.
         }
+      } else {
+        discount = parseFloat(discountInput) || 0; // If not percentage, just get the whole number
+      }
 
-        return {
-          name: person.name || `${personIndex + 1}`,
-          total: Math.max(0, personGrossTotal - discount),
-          baseShare: baseShare,
-          orders: person.orders,
-          discountAmount: discount,
-        };
-      });
-
-      results = finalResults;
-    }
+      return {
+        name: person.name || `Person ${personIndex + 1}`,
+        total: Math.max(0, personGrossTotal - discount),
+        baseShare: baseShare,
+        orders: person.orders,
+        discountAmount: discount,
+      };
+    });
 
     return { results, splitShare: baseShare };
-  }, [billAmount, numberOfPeople, peopleList, separatePayment]);
+  }, [billAmount, numberOfPeople, peopleList]);
 
   const calculation = calculateReceipt();
   
   const resetCalculator = () => {
     setBillAmount("");
     setNumberOfPeople("1");
-    setSeparatePayment(false);
     setPeopleList([]);
   };
 
   return {
     billAmount,
     numberOfPeople,
-    separatePayment,
     peopleList,
     results: calculation.results,
     splitShare: calculation.splitShare,
 
     setBillAmount,
     setNumberOfPeople,
-    setSeparatePayment,
 
     addPerson,
     deletePerson,
@@ -250,6 +199,5 @@ export function useBillCalculator() {
     updateOrder,
     calculateReceipt,
     resetCalculator,
-    importPaymentData,
   };
 }
