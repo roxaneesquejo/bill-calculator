@@ -38,15 +38,15 @@ function BillCalculator() {
   };
 
   const handleRemovePerson = () => {
-    if (numberOfPeople > 1) {
-      deletePerson();
+    if (numberOfPeople > 1 && peopleList.length > 1) {
+      deletePerson(peopleList.length - 1);
       setNumberOfPeople((prev) => Number(prev) - 1);
     }
   };
 
   const handleInputPerson = (e) => {
     const num = Number(e.target.value);
-    if (num < 1) return;
+    if (num < 0) return;
 
     setNumberOfPeople(num);
 

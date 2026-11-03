@@ -21,8 +21,8 @@ export function useBillCalculator() {
   // Add a person to the people list
   const addPerson = () => {
     // Syntax: setterFunction([...array, {items to be added to the list}]) | Note: [...peopleList] creates a new array but copies all items already inside the array.
-    setPeopleList([
-      ...peopleList,
+    setPeopleList((currentPeople) => [
+      ...currentPeople,
       {
         name: "",
         orders: [],
@@ -35,8 +35,7 @@ export function useBillCalculator() {
 
   // Delete a person
   const deletePerson = (personIndex) => {
-    const updatedPeople = peopleList.filter((_, i) => i !== personIndex); // Note: .filter creates a new array, if it does not match the personIndex (to delete), it keeps it in the array.
-    setPeopleList(updatedPeople); // Sets the people list to the updated list
+    setPeopleList((currentPeople) => currentPeople.filter((_, i) => i !== personIndex),);
   };
 
   // Add order to a person
@@ -136,8 +135,8 @@ export function useBillCalculator() {
     const remainingBill = Math.max(0, bill - totalExtrasCost); // The total bill is subtracted by the extra order costs, to get the share of those who did not get an extra order.
     const baseShare = people > 0 ? remainingBill / people : 0; // The base share is calculated by dividing the remaining bill by the number of people. It is 0 if no people.
 
-    // Calculates the share of those with extra orders.
-    const results = peopleList.map((person, personIndex) => {
+    // Calculate each person's share before applying individual discounts
+    const grossResults = peopleList.map((person, personIndex) => {
       const extraTotal = person.orders.reduce(
         (sum, order) => sum + (Number(order.cost) || 0),
         0,
@@ -152,7 +151,7 @@ export function useBillCalculator() {
         // To check if whole number or percentage
         const percentage = parseFloat(discountInput.replace("%", "")); // Removes the percentage symbol, because we only need the numbers for float.
         if (!isNaN(percentage)) {
-          discount = personGrossTotal * (percentage / 100); // If it is a percentage, get how much is discounted.
+          discount = baseShare * (percentage / 100); // This makes sure people with discount only apply to the person's base share.
         }
       } else {
         discount = parseFloat(discountInput) || 0; // If not percentage, just get the whole number
@@ -160,12 +159,28 @@ export function useBillCalculator() {
 
       return {
         name: person.name || `Person ${personIndex + 1}`,
-        total: Math.max(0, personGrossTotal - discount),
-        baseShare: baseShare,
+        grossTotal: personGrossTotal,
+        baseShare,
         orders: person.orders,
-        discountAmount: discount,
+        discountAmount: Math.min(Math.max(0, discount), baseShare),
       };
     });
+
+    const totalDiscount = grossResults.reduce(
+      (total, person) => total + person.discountAmount,
+      0,
+    );
+
+    const peopleWithoutDiscount = grossResults.filter((person) => person.discountAmount === 0,).length;
+    const discountShare = peopleWithoutDiscount > 0 ? totalDiscount / peopleWithoutDiscount : 0;
+
+    const results = grossResults.map((person) => ({
+      name: person.name,
+      total: person.grossTotal - person.discountAmount + (person.discountAmount === 0 ? discountShare : 0),
+      baseShare: person.baseShare,
+      orders: person.orders,
+      discountAmount: person.discountAmount,
+    }));
 
     return { results, splitShare: baseShare };
   }, [billAmount, numberOfPeople, peopleList]);
